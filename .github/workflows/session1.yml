@@ -32,7 +32,9 @@ jobs:
 
   node-test:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: node
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,7 +49,7 @@ jobs:
         with:
           path: |
             ~/.npm
-            node/node_modules
+            node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
