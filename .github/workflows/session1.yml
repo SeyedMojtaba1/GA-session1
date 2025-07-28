@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: Checkout code
       run: |
-        git clone https://github.com/Learning-Actions-in-Persian/GA-session1.git
+        git clone https://github.com/SeyedMojtaba1/GA-session1.git
         mv GA-session1/{.,}* .
     
     - name: Install Python and pip
