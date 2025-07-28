@@ -2,7 +2,7 @@ on:
   push:
 
 jobs:
-  test:
+  python-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,8 +14,49 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('python/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
       - name: Install depencies
-        run: pip install -r requirements.txt
+        run: pip install -r python/requirements.txt
+
+      - name: Run lint
+        run: pylint python/*.py
 
       - name: Run tests
-        run: pytest test.py
+        run: pytest python/test.py
+
+  node-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache node
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: node node/test.js
