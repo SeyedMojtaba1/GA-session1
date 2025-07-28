@@ -1,4 +1,4 @@
-import main
+from main import say_hello
 
-if __name__ == "__main__":
-    print(main.hello())
+def test_say_hello():
+    assert say_hello() == "Hello, World!"
